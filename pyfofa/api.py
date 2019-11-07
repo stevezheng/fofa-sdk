@@ -29,12 +29,12 @@ class FofaAPI(object):
             error_msg = {"error": True, "errmsg": "Connect error"}
             return error_msg
 
-    def get_data(self, query_str='', page=1, fields='host,ip,port'):
+    def get_data(self, query_str='', page=1, size=10, fields='host,ip,port', full=False):
         try:
             url = '{url}{api}'.format(url=self.base_url, api=self.search_api_url)
             query_str = bytes(query_str, 'utf-8')
             data = {'qbase64': base64.b64encode(query_str), 'email': self.email, 'key': self.key, 'page': page,
-                    'fields': fields}
+                    'size': size, 'fields': fields, 'full': full}
             req = requests.get(url, params=data, timeout=10)
             return req.json()
         except requests.exceptions.ConnectionError:
